@@ -17,7 +17,7 @@ using namespace std;
  *          
  * 
  * Time Complexity: O(nlogn)
- * Space Complexity: ?
+ * Space Complexity: O(n)
  *
  */
 
