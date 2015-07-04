@@ -71,8 +71,9 @@ int main(){
     vector<int> nums1 {-1, 1};
     vector<int> nums2 {1, 2, 3};
     vector<int> nums3 {10, -4, 5, -2, -3};
-
+    vector<int> nums4 {1, 2};
     assert(maxSubarraySolver.maxSubArray(nums1) == 1);
     assert(maxSubarraySolver.maxSubArray(nums2) == 6);
     assert(maxSubarraySolver.maxSubArray(nums3) == 11);
+    assert(maxSubarraySolver.maxSubArray(nums4) == 4);
 }
