@@ -13,9 +13,11 @@ public:
     void qsort(vector<int> &data);
     bool isSorted(int start, int end, vector<int> & data);
 private:
+    void tailSortHelper(int start, int end, vector<int> & data);
     void sortHelper(int start, int end, vector<int> & data);
     void threeSortHelper(int start, int end, vector<int> & data);
     int partition(int start, int end, vector<int> & data);
+    int optimizedLumutoPartition(int start, int end, vector<int> & data);
     int randomPartition(int start, int end, vector<int> & data);
     int medianPartition(int start, int end, vector<int> & data);
     int getRandom(int start, int end);
@@ -177,6 +179,29 @@ void QuickSort::shuffle(vector<int> & data){
     }
 
 }
+
+int QuickSort::optimizedLumutoPartition(int start, int end, vector<int> & data){
+    int pivot = data[start];
+    int j = end + 1, m = end + 1;
+    do {
+        while(data[--j] < pivot){
+        }
+        swap(data[j], data[--m]);
+    } while (j != start);
+
+    return m;
+}
+
+void QuickSort::tailSortHelper(int start, int end, vector<int> & data){
+    while(start < end) {
+        int p = hoarePartition(int start, int end, vector<int> & data);
+        tailSortHelper(start, p - 1, data);
+        start = p + 1;
+    }
+}
+
+
+
 int main(){
     vector<int> test1 {0};
     vector<int> test2 {-1, 3, 2, 4,-10, 100};
