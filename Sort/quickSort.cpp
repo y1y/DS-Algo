@@ -4,12 +4,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include <utility>
+#include <cassert>
 
 using namespace std;
 
 class QuickSort{
 public:
     void qsort(vector<int> &data);
+    bool isSorted(int start, int end, vector<int> & data);
 private:
     void sortHelper(int start, int end, vector<int> & data);
     void threeSortHelper(int start, int end, vector<int> & data);
@@ -19,6 +21,8 @@ private:
     int getRandom(int start, int end);
     int hoarePartition(int start, int end, vector<int> & data);
     pair<int, int> threeWayPartition(int start, int end, vector<int> & data);
+    pair<int, int> fastThreePartition(int start, int end, vector<int> & data);
+    void shuffle(vector<int> & data);
 };
 
 void QuickSort::qsort(vector<int> & data){
@@ -107,25 +111,80 @@ pair<int, int> QuickSort::threeWayPartition(int start, int end, vector<int> & da
         }
     }
     return make_pair(low, high); 
-
 }
 
+pair<int, int> QuickSort::fastThreePartition(int start, int end, vector<int> & data){
+	int i = start, j = end + 1;
+        int p = start, q = end + 1;
+        int v = data[start];
+        while(true){
+            while(data[++i] < v){
+	        if(i == end){
+                     break;
+                }
+            }
+	    while(data[--j] > v){
+                if(j == start){
+                     break;
+                }
+            }
+            if(i == j && data[i] == v){
+                swap(data[++p], data[i]);
+            }
+            if(i >= j) break;
+            swap(data[i], data[j]);
+            if(data[i] == v){
+                swap(data[++p], data[i]);
+            }
+            if(data[j] == v){
+                swap(data[--q], data[j]);
+            }
+        }
+
+        i = j + 1;
+        for(int k = start; k <= p; ++k){
+	    swap(data[k], data[j--]);
+        }
+        for(int k = end; k>= q; --k){
+            swap(data[k], data[i++]);
+        }
+        return make_pair(j + 1, i - 1);
+}
 void QuickSort::threeSortHelper(int start, int end, vector<int> & data){
     if(start >= end){
-        return;
+       return;
     }
-    auto bound = threeWayPartition(start, end, data); 
+    auto bound = fastThreePartition(start, end, data); 
     threeSortHelper(start,bound.first - 1, data);
     threeSortHelper(bound.second + 1, end, data);  
 }
 
+bool QuickSort::isSorted(int start, int end, vector<int> & data){
+    for(int i = start + 1; i <= end; ++i){
+        if(data[i] < data[i-1]){
+            return false;
+        }
+    }
+    return true;
+
+}
+
+void QuickSort::shuffle(vector<int> & data){
+    for(int i = 0; i < data.size(); ++i){
+       srand(time(NULL));
+       int r = rand() % (i + 1);
+       swap(data[i], data[r]);
+    }
+
+}
 int main(){
     vector<int> test1 {0};
     vector<int> test2 {-1, 3, 2, 4,-10, 100};
     QuickSort solver;
     solver.qsort(test1);
     solver.qsort(test2);
-
+    assert(solver.isSorted(0, test1.size()-1, test1));
+    assert(solver.isSorted(0, test2.size()-1, test2));
     for(auto & t: test1){
         cout << t << ",";
     }
