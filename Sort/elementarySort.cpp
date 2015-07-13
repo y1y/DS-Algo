@@ -9,6 +9,7 @@ public:
     void optimizedInsertionSort(vector<int> & data);
     void selectionSort(vector<int> & data);
     void shellSort(vector<int> & data); 
+    int getLowerBound(int low, int high, vector<int> & data, int target);
 };
 
 void ElementarySort::insertionSort(vector<int> & data){
@@ -26,15 +27,11 @@ void ElementarySort::insertionSort(vector<int> & data){
 void ElementarySort::optimizedInsertionSort(vector<int> & data){
     for(int i = 1; i < data.size(); ++i){
         int temp = data[i];
-	int k = i - 1;
-	for(; k >= 0; --k){
-            if(data[k] > temp){
-                data[k + 1] = data[k];
-	    } else {
-         	break;
-            }
+        int l = getLowerBound(0, i - 1, data, temp);
+        for(int j = i; (j > l + 1) && j >= 1; --j){
+            data[j] = data[j-1];
         }
-        data[k + 1] = temp;
+        data[l + 1] = temp;
     } 
 }
 
@@ -52,6 +49,19 @@ void ElementarySort::selectionSort(vector<int> & data){
      } 
 }
 
+
+int ElementarySort::getLowerBound(int low, int high, vector<int> & data, int target){
+   while(low <= high){
+       int mid = low + (high - low) / 2;
+       if(data[mid] <= target){
+          low = mid + 1;
+       } else if(data[mid] > target){
+          high = mid - 1;
+       } 
+    } 
+    return high;
+}
+
 //TODO:
 void ElementarySort::shellSort(vector<int> & data){
 
@@ -61,7 +71,7 @@ void ElementarySort::shellSort(vector<int> & data){
 int main(){
     ElementarySort solver;
     vector<int> data{2, -1, 3, 4, 1, 5};
-    solver.selectionSort(data);
+    solver.optimizedInsertionSort(data);
     for(auto &a: data){
         cout << a << ",";
     }
