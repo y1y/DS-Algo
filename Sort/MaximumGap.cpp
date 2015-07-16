@@ -18,19 +18,19 @@ int MaximumGap::maximumGap(vector<int> & nums){
     }
     int maxEle = *max_element(nums.begin(), nums.end());
     int minEle = *min_element(nums.begin(), nums.end());
-    // gap cannot be zero!
-    int gap = ceil((maxEle - minEle) / (double)nums.size());
-    cout << "gap:" << gap << endl;
-    vector<pair<int, int>> bucket (nums.size() + 1, make_pair(INT_MAX, INT_MIN));
+    double len = maxEle - minEle + 1;
+    int n = nums.size();
+
+    vector<pair<int, int>> bucket (n, make_pair(INT_MAX, INT_MIN));
     for(auto &num: nums){
-        int bucketNum = (num - minEle) / gap;
-        assert(bucketNum < bucket.size());
+        int bucketNum = n * ((num - minEle) / len);
+        assert(bucketNum < n);
         bucket[bucketNum].first = min(bucket[bucketNum].first, num);
         bucket[bucketNum].second = max(bucket[bucketNum].second, num);
     }
     int preMax = bucket[0].second;
-
-    for(int i = 1; i < bucket.size(); ++i){
+    int gap = len / n;
+    for(int i = 1; i < n; ++i){
         if(bucket[i].first == INT_MAX){
             continue;
         }

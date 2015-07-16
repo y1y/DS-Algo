@@ -5,6 +5,7 @@ using namespace std;
 class SortColor{
 public:
     void sortColorsCountingSort(vector<int> & nums);
+    void sortColorCountingSortInPlace(vector<int> & nums);
     void sortColorThreeWayPartition(vector<int> & nums);
     void sortColorFastThreeWayPartition(vector<int> & nums);
 };
@@ -25,6 +26,20 @@ void SortColor::sortColorsCountingSort(vector<int> & nums){
      }
      nums = colors;
 }
+
+void SortColor::sortColorCountingSortInPlace(vector<int> & nums){
+        vector<int> countArray(3);
+        for(auto & num: nums){
+            ++countArray[num]; 
+        }
+        int current = 0;
+        for(int i = 0; i <= 2; ++i){
+            for(int j = 0; j < countArray[i]; ++j){
+                nums[current++] = i;
+            }
+        }
+}
+
 void SortColor::sortColorThreeWayPartition(vector<int> & nums){
      int low = -1;
      int i = 0;
