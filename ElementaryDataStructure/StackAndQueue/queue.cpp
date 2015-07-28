@@ -58,7 +58,6 @@ void Queue<T>::pop(){
 
 template<typename T>
 void Queue<T>::resize(int new_size){
-    cout << "resize" << endl;
     vector<T> temp = move(data);
     data.resize(new_size);
     for(int i = 0; i < size; ++i){
